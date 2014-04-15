@@ -132,8 +132,17 @@ void PendSV_Handler(void)
   * @param  None
   * @retval None
   */
+static int led_status;
 void SysTick_Handler(void)
 {
+	led_status = !led_status;
+	GPIO_WriteBit(GPIOB, GPIO_Pin_14, led_status);
+}
+
+static int led2_status;
+void EXTI9_5_IRQHandler(void) {
+	led2_status = !led2_status;
+	GPIO_WriteBit(GPIOB, GPIO_Pin_15, led2_status);
 }
 
 /******************************************************************************/

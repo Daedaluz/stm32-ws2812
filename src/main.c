@@ -6,10 +6,10 @@
 #include <stm32f10x_rcc.h>
 #include <stm32f10x_gpio.h>
 #include <stm32f10x_usart.h>
+#include <enc28j60_driver.h>
 
 #include "uart.h"
 #include "ws2812.h"
-
 static GPIO_InitTypeDef gpiocfg = {
 	.GPIO_Pin = GPIO_Pin_12,
 	.GPIO_Speed = GPIO_Speed_50MHz,
@@ -20,37 +20,28 @@ int _sbrk(int a) {
 	return a;
 }
 
-static char buff[3] = {0x0f,0xff,0};
-static char lol[200];
 static int i = 0;
 static int x = 0;
+
+static uint32_t mode = 0;
 
 int main() {
 	uart1_init();
 	ws2812_init();
-
-//	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
+	e28j60_init();
 	GPIO_Init(GPIOB, &gpiocfg);
 	GPIO_WriteBit(GPIOB, GPIO_Pin_12, 1);
-
+	char buffer[] = {0xaa, 0x90, 0xff, 0x00, 0x10};
+	while(1)
+		e28j60_wbm_cont(buffer, 5);
+//		e28j60_spi_rw(0x01);
 	cputc('x');
-	sprintf(lol, "%d\n", SystemCoreClock);
-	cputs(lol);
+//	sprintf(lol, "%d\n", SystemCoreClock);
+//	cputs(lol);
 	int i;
-	ws2812_write(0, buff);
 	while(1){
-//		ws2812_write(0, buff);
-//		buff[1]++;
 		for(i = 0; i < 7200000; i++);
-//		buff[0]++;
-//		for(i = 0; i < 1; i++) {
-//			for(x = 0; x < 3; x++) {
-//				buff[x] = cgetc();
-//				cputc(buff[x]);
-//			}
-//		ws2812_write(0, buff[1], buff[0], buff[2]);
-//			cputc('p');
-//		}
+		request_write_ws2812();
 	}
 }
 
