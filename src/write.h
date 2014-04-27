@@ -1,10 +1,12 @@
 #ifndef __WRITE_H__
 #define __WRITE_H__
 
-#define BUFFER_SIZE (0x3840 + 42)
+//#define BUFFER_SIZE (0x3840 + 42)
+//#define BUFFER_SIZE (0x1840 + 42)
+#define BUFFER_SIZE (2*24 + 42)
 
 extern int32_t write_size;
-extern uint8_t write_buffer[BUFFER_SIZE];
+extern uint16_t write_buffer[BUFFER_SIZE];
 
 void request_write_dmx(void);
 void request_write_ws2812(void);
