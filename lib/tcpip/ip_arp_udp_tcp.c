@@ -32,6 +32,8 @@ static int16_t info_hdr_len=0;
 static int16_t info_data_len=0;
 static uint8_t seqnum=0xa; // my initial tcp sequence number
 
+
+
 // The Ip checksum is calculated over the ip header only starting
 // with the header length field and a total length of 20 bytes
 // unitl ip.dst

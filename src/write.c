@@ -1,7 +1,8 @@
+#include <stdint.h>
 #include <stm32f10x_dma.h>
 #include <stm32f10x_tim.h>
-#include "write.h"
 #include <stm32f10x_gpio.h>
+#include "write.h"
 
 // 10 Meters of ws2812
 // also fits dmx (of 513)
@@ -9,48 +10,28 @@
 
 uint16_t write_buffer[BUFFER_SIZE];
 
-void request_write_dmx(void) {
-	// allways write 512 bytes
-}
-#define PERIOD 3
-#define HIGH 2
-#define LOW 1
-#define FAC 1
-void request_write_ws2812(void) {
-//	while(DMA_GetFlagStatus(DMA1_FLAG_TC1));
-//	DMA_SetCurrDataCounter(DMA1_Channel1, BUFFER_SIZE);
-//	DMA_Cmd(DMA1_Channel1, ENABLE);
-//	TIM_Cmd(TIM4, ENABLE);
-//	while(!DMA_GetFlagStatus(DMA1_FLAG_TC1));
-//	TIM_Cmd(TIM4, DISABLE);
-//	DMA_Cmd(DMA1_Channel1, DISABLE);
-//	DMA_ClearFlag(DMA1_FLAG_TC1);
-	
-//	int x = 0;
-//	int y = 0;
-//	for(x = 0; x < ((17*24)+42); x++) {
-//		switch(write_buffer[x]) {
-//			case 17:
-//				GPIO_WriteBit(GPIOB,GPIO_Pin_6,1);
-//				for(y = 0; y <= (HIGH*FAC); y++){}
-//				GPIO_WriteBit(GPIOB,GPIO_Pin_6,0);
-//				for(y = 0; y <= ((PERIOD-HIGH)*FAC); y++){}
-//				break;
-//			case 9:
-//				GPIO_WriteBit(GPIOB,GPIO_Pin_6,1);
-//				for(y = 0; y <= (LOW*FAC); y++){}
-//				GPIO_WriteBit(GPIOB,GPIO_Pin_6,0);
-//				for(y = 0; y <= ((PERIOD-LOW)*FAC); y++){}
-//				break;
-//			case 0:
-//				GPIO_WriteBit(GPIOB, GPIO_Pin_6, 0);
-//				for(y = 0; y <= (PERIOD*FAC); y++){}
-//				break;
-//		}
-//	}
+//#define CMPH 17
+//#define CMPL 9
+
+#define CMPH 8
+#define CMPL 2
+void write_ws2812(uint32_t offset, uint32_t size, char* data) {
+	uint32_t x = 0;
+	for(x = 0; x < size; x++) {
+		write_buffer[((x+offset)*8)+0] = (data[x] & 0x80) ? CMPH:CMPL;
+		write_buffer[((x+offset)*8)+1] = (data[x] & 0x40) ? CMPH:CMPL;
+		write_buffer[((x+offset)*8)+2] = (data[x] & 0x20) ? CMPH:CMPL;
+		write_buffer[((x+offset)*8)+3] = (data[x] & 0x10) ? CMPH:CMPL;
+		write_buffer[((x+offset)*8)+4] = (data[x] & 0x08) ? CMPH:CMPL;
+		write_buffer[((x+offset)*8)+5] = (data[x] & 0x04) ? CMPH:CMPL;
+		write_buffer[((x+offset)*8)+6] = (data[x] & 0x02) ? CMPH:CMPL;
+		write_buffer[((x+offset)*8)+7] = (data[x] & 0x01) ? CMPH:CMPL;
+	}
 }
 
-void request_write_ws2801(void) {
+void write_dmx(uint32_t offset, uint32_t size, char* data) {
+}
 
+void request_write_ws2801(uint32_t offset, uint32_t size, char* data) {
 }
 

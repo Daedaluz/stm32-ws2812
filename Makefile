@@ -4,11 +4,11 @@ STDLIB=lib/src/core_cm3.o lib/src/misc.o lib/src/stm32f10x_adc.o lib/src/stm32f1
 
 ENC28J60=lib/tcpip/enc28j60.o lib/tcpip/ip_arp_udp_tcp.o lib/tcpip/SPI.o #lib/tcpip/simple_server.o
 
-SRC=src/main.o src/uart.o src/ws2812.o src/enc28j60.c src/write.o
+SRC=src/main.o src/uart.o src/ws2812.o src/write.o
 
 CC=arm-none-eabi-gcc
 CXX=arm-none-eabi-gcc
-AS=arm-none-eabi-as
+AS=arm-none-eabi-as #-mbig-endian
 LD=arm-none-eabu-ld
 
 INCLUDES=-I lib/inc -I lib/tcpip

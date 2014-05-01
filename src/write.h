@@ -1,16 +1,16 @@
 #ifndef __WRITE_H__
 #define __WRITE_H__
 
-//#define BUFFER_SIZE (0x3840 + 42)
+#define BUFFER_SIZE (0x3840 + 42)
+#include <stdint.h>
 //#define BUFFER_SIZE (0x1840 + 42)
-#define BUFFER_SIZE (2*24 + 42)
+//#define BUFFER_SIZE (6*24 + 42)
 
-extern int32_t write_size;
 extern uint16_t write_buffer[BUFFER_SIZE];
 
-void request_write_dmx(void);
-void request_write_ws2812(void);
-void request_write_ws2801(void);
+void write_dmx(uint32_t offset, uint32_t size, char* data);
+void write_ws2812(uint32_t offset, uint32_t size, char* data);
+void write_ws2801(uint32_t offset, uint32_t size, char* data);
 
 #endif /* __WRITE_H__ */
 
