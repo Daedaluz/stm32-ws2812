@@ -39,8 +39,7 @@ int _sbrk(int a) {
 
 
 uint8_t mac[] = {0x54,0x55,0x58,0x10,0x00,0x01};
-uint8_t ip[] = {192,168,0,4};
-uint8_t recv_buff[1024];
+uint8_t recv_buff[1524];
 
 
 int main() {
@@ -51,7 +50,7 @@ int main() {
 	char buffer[] = {0xaa, 0x90, 0xff, 0x00, 0x10};
 	
 	SPI1_Init();
-	init_ip_arp_udp_tcp(mac, ip, 80);
+	init_ip_arp_udp(mac);
 	enc28j60Init(mac);
 	enc28j60PhyWrite(PHLCON, 0x7a4);
 	enc28j60clkout(2);
