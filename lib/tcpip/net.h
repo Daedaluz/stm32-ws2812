@@ -31,57 +31,8 @@
 #define NET_H
 #include <stdint.h>
 
-struct mac_t {
-        uint8_t b0;
-        uint8_t b1;
-        uint8_t b2;
-        uint8_t b3;
-        uint8_t b4;
-        uint8_t b5;
-};
-
-
-struct udp_t {
-        uint16_t src_port;
-        uint16_t dst_port;
-        uint16_t length;
-        uint16_t crc;
-};
-
-struct ip_t {
-        uint8_t version_length;
-        uint8_t tos;
-        uint16_t total_length;
-        uint16_t identification;
-        uint16_t flags;
-        uint32_t source_address;
-        uint32_t destination_address;
-        union {
-                struct udp_t udp;
-        }data;
-};
-
 #define ARP_OP_REQ 0
 #define ARP_OP_RESP 1
-
-struct arp_t {
-        uint16_t HTYPE;
-        uint16_t PTYPE;
-        uint8_t HLEN;
-        uint8_t PLEN;
-        uint16_t OP;
-};
-
-struct eth_t {
-        struct mac_t dst;
-        struct mac_t src;
-        uint16_t type;
-        union {
-                struct ip_t ip;
-                struct arp_t arp;
-        } data;
-};
-
 
 // ******* ETH *******
 #define ETH_HEADER_LEN	14
