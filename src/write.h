@@ -1,8 +1,8 @@
 #ifndef __WRITE_H__
 #define __WRITE_H__
 
-#define BUFFER_SIZE (0x3840 + 42)
 #include <stdint.h>
+#define BUFFER_SIZE (0x3840 + 42)
 //#define BUFFER_SIZE (0x1840 + 42)
 //#define BUFFER_SIZE (6*24 + 42)
 

@@ -3,6 +3,8 @@ STDLIB=lib/src/core_cm3.o lib/src/misc.o lib/src/stm32f10x_adc.o lib/src/stm32f1
 #ENC28J60=lib/enc28j60/enc28j60_driver.c
 
 ENC28J60=lib/tcpip/enc28j60.o lib/tcpip/ip_arp_udp_tcp.o lib/tcpip/SPI.o #lib/tcpip/simple_server.o
+BUFFER=lib/buffer/buffer.o
+NET=lib/net/enc28j60.o lib/net/SPI.o lib/net/ip.o lib/net/eth.o lib/net/net.o lib/net/dhcp.o lib/net/arp.o
 
 SRC=src/main.o src/uart.o src/ws2812.o src/write.o
 
@@ -11,19 +13,21 @@ CXX=arm-none-eabi-gcc
 AS=arm-none-eabi-as #-mbig-endian
 LD=arm-none-eabu-ld
 
-INCLUDES=-I lib/inc -I lib/tcpip
+INCLUDES=-I lib/inc -I lib/buffer -I lib/net
 
 SYS=MD
 HSE=8000000
 
 STARTUP=lib/startup/startup_stm32f10x_$(shell echo $(SYS) | tr A-Z a-z).o
 
-CFLAGS=-mcpu=cortex-m3 -mthumb -mlittle-endian -mthumb-interwork -Wl,-T,lib/ld/stm32_flash.ld -DUSE_STDPERIPH_DRIVER -DSTM32F10X_$(SYS) -DHSE_VALUE=$(HSE) -lnosys -nostdlib -Os $(INCLUDES)
+CFLAGS=-mcpu=cortex-m3 -mthumb -mlittle-endian -mthumb-interwork -Wl,-T,lib/ld/stm32_flash.ld -DUSE_STDPERIPH_DRIVER -DSTM32F10X_$(SYS) -DHSE_VALUE=$(HSE) -lnosys -nostdlib -O0 $(INCLUDES)
 
 LDFLAGS=-lnosys -nostdlib -lc -lm
 
-main.elf: $(STDLIB) $(SRC) $(ENC28J60) $(STARTUP)
-	$(CC) $(SRC) $(STARTUP) $(ENC28J60) $(STDLIB) $(CFLAGS) -o main.elf
+OBJ=$(SRC) $(STARTUP) $(STDLIB) $(NET) $(BUFFER)
+
+main.elf: $(OBJ)
+	$(CC) $(OBJ)  $(CFLAGS) -o main.elf
 
 .PHONY: clean program
 

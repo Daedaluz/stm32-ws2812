@@ -31,6 +31,9 @@
 #define NET_H
 #include <stdint.h>
 
+
+// ****** ARP ******
+
 #define ARP_OP_REQ 0
 #define ARP_OP_RESP 1
 
@@ -130,4 +133,45 @@
 #define TCP_CHECKSUM_L_P 0x33
 #define TCP_OPTIONS_P 0x36
 //
+
+// ****** DHCP *****
+
+#define DHCP_OP_REQUEST 1
+#define DHCP_OP_REPLY 2
+
+#define DHCP_OP_P (ETH_HEADER_LEN+IP_HEADER_LEN+UDP_HEADER_LEN)
+#define DHCP_HTYPE_P (DHCP_OP_P+1)
+#define DHCP_HLEN_P (DHCP_OP_P+2)
+#define DHCP_HOPS_P (DHCP_OP_P+3)
+
+#define DHCP_XID1_P (DHCP_OP_P+4)
+#define DHCP_XID2_P (DHCP_OP_P+5)
+#define DHCP_XID3_P (DHCP_OP_P+6)
+#define DHCP_XID4_P (DHCP_OP_P+7)
+
+#define DHCP_SECS_H_P (DHCP_OP_P+8)
+#define DHCP_SECS_L_P (DHCP_OP_P+9)
+
+#define DHCP_FLAGS_H_P (DHCP_OP_P+10)
+#define DHCP_FLAGS_L_P (DHCP_OP_P+11)
+
+#define DHCP_CIADDR1_P (DHCP_OP_P+12)
+#define DHCP_CIADDR2_P (DHCP_OP_P+13)
+#define DHCP_CIADDR3_P (DHCP_OP_P+14)
+#define DHCP_CIADDR4_P (DHCP_OP_P+15)
+
+#define DHCP_YIADDR1_P (DHCP_OP_P+16)
+#define DHCP_YIADDR2_P (DHCP_OP_P+17)
+#define DHCP_YIADDR3_P (DHCP_OP_P+18)
+#define DHCP_YIADDR4_P (DHCP_OP_P+19)
+
+#define DHCP_SIADDR1_P (DHCP_OP_P+20)
+#define DHCP_SIADDR2_P (DHCP_OP_P+21)
+#define DHCP_SIADDR3_P (DHCP_OP_P+22)
+#define DHCP_SIADDR4_P (DHCP_OP_P+23)
+
+#define DHCP_GIADDR1_P (DHCP_OP_P+20)
+#define DHCP_GIADDR2_P (DHCP_OP_P+21)
+#define DHCP_GIADDR3_P (DHCP_OP_P+22)
+#define DHCP_GIADDR4_P (DHCP_OP_P+23)
 #endif

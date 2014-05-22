@@ -102,6 +102,46 @@ void init_ip_arp_udp(uint8_t *mymac)
 	}
 }
 
+uint8_t make_dhcp_request(uint8_t* buf) {
+        int i;
+        uint16_t ck;
+        for(i = 0; i < 6; i++) {
+                buf[ETH_DST_MAC + i] = 0xff;
+                buf[ETH_SRC_MAC + i] = macaddr[i];
+        }
+        for(i = 0; i < 4; i++) {
+                buf[IP_DST_P + i] = 0xff;
+                buf[IP_SRC_P + i] = 0x00;
+        }
+        uint8_t datalen = 44;
+        uint16_t port = 68;
+	// total length field in the IP header must be set:
+	buf[IP_TOTLEN_H_P]=0;
+	buf[IP_TOTLEN_L_P]=IP_HEADER_LEN+UDP_HEADER_LEN+datalen;
+        fill_ip_hdr_checksum(buf);
+
+	buf[UDP_DST_PORT_H_P]=port>>8;
+	buf[UDP_DST_PORT_L_P]=port & 0xff;
+	// source port does not matter and is what the sender used.
+	// calculte the udp length:
+	buf[UDP_LEN_H_P]=0;
+	buf[UDP_LEN_L_P]=UDP_HEADER_LEN+datalen;
+	// zero the checksum
+	buf[UDP_CHECKSUM_H_P]=0;
+	buf[UDP_CHECKSUM_L_P]=0;
+	// copy the data:
+	while(i<datalen) 
+	{
+		buf[UDP_DATA_P+i]=data[i];
+		i++;
+	}
+	ck=checksum(&buf[IP_SRC_P], 16 + datalen);
+	buf[UDP_CHECKSUM_H_P]=ck>>8;
+	buf[UDP_CHECKSUM_L_P]=ck& 0xff;
+	enc28j60PacketSend(UDP_HEADER_LEN+IP_HEADER_LEN+ETH_HEADER_LEN+datalen,buf);
+
+}
+
 uint8_t eth_type_is_arp_and_my_ip(uint8_t *buf,uint16_t len) 
 {
 	uint8_t i=0;
