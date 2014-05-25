@@ -266,7 +266,7 @@ uint16_t enc28j60PacketReceive(uint16_t maxlen, uint8_t* packet)
 
 //	while( enc28j60Read(EPKTCNT) == 0 );
 	int cont = 0;
-	for(retries = 0; retries > 5000; retries++){
+	for(retries = 0; retries < 7200; retries++){
 		if (enc28j60Read(EPKTCNT) != 0){
 			cont = 1;
 			break;

@@ -58,6 +58,7 @@ int main() {
 	while(1) {
 		if(net_recv() == 0) {
 			sleep(1);
+			cputs("sending DHCP discover\n");
 			dhcp_discover();
 		}
 		if(eth_get_type() == ETH_IPV4 && ip_get_protocol() == IP_UDP && ip_udp_get_dst() == 68 && dhcp_is_magic())
@@ -95,7 +96,8 @@ int main() {
 	net_send();
 	buffer_flush(&netwbuff1);
 	while(1){
-		net_recv();
+		if(net_recv() == 0)
+			continue;
 		switch(eth_get_type()) {
 			case ETH_IPV4:
 				// suck all the led-data!!!
