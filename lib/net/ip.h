@@ -29,6 +29,7 @@ uint32_t ip_is_protocol(uint8_t proto);
 uint16_t ip_udp_get_src();
 uint16_t ip_udp_get_dst();
 uint16_t ip_udp_get_len();
+char* ip_udp_get_datap();
 
 uint32_t ip_get_src_addr();
 uint32_t ip_get_dst_addr();

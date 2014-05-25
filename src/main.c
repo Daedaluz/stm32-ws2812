@@ -50,7 +50,6 @@ int main() {
 	
 	write_ws2812(0,3, "\x00\x0f\x00");
 
-
 	msleep(50);
 	buffer_flush(&netwbuff1);
 	eth_write_header(&netwbuff1, mac_addr, mac_bcast, ETH_IPV4);
@@ -69,7 +68,6 @@ int main() {
 		buffer_flush(&netwbuff1);
 		eth_write_header(&netwbuff1, &mac_addr[0], tmpmac, ETH_IPV4);
 		dhcp_request(tmpsip, tmpyip);
-//		cputs(buff);
 	}
 	while(1){
 		net_recv();
@@ -95,7 +93,6 @@ int main() {
 				// suck all the led-data!!!
 				if(ip_get_dst_addr() == htonl(*(uint32_t*)ip_addr) && ip_udp_get_dst() == 1200){
 					write_ws2812(0, (uint32_t)ip_udp_get_len(), ip_udp_get_datap());
-					
 				}
 			break;
 			case ETH_ARP:{

@@ -36,7 +36,7 @@ void arp_reply(struct buffer* b, char* mac, uint32_t to) {
 }
 
 char* arp_get_sender_mac() {
-	return net_buffer[0x16];
+	return &net_buffer[0x16];
 }
 
 uint32_t arp_get_sender_ip() {
