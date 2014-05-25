@@ -4,7 +4,7 @@ void usleep(uint32_t us) {
 	uint32_t l;
 	uint32_t x;
 	for(x = 0; x < us; x++)
-		for(l = 0; l < 72000000; l++);
+		for(l = 0; l < 4; l++);
 }
 
 void msleep(uint32_t msec) {

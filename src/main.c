@@ -34,13 +34,12 @@ int _sbrk(int a) {
 static uint8_t mac[6] = {0x54, 0x55, 0x58, 0x10, 0x00, 0x01};
 
 int main() {
+	char buff[50];
 
 	uart1_init();
 	ws2812_init();
 	GPIO_Init(GPIOB, &gpiocfg);
-	char buffer[] = {0xaa, 0x90, 0xff, 0x00, 0x10};
-	char buff[50];
-	
+
 	SPI1_Init();
 	enc28j60Init(mac_addr);
 	enc28j60PhyWrite(PHLCON, 0x7a4);
@@ -51,8 +50,10 @@ int main() {
 	write_ws2812(0,3, "\x00\x0f\x00");
 
 	msleep(50);
+
 	buffer_flush(&netwbuff1);
 	eth_write_header(&netwbuff1, mac_addr, mac_bcast, ETH_IPV4);
+	cputs("sending DHCP discover\n");
 	dhcp_discover();
 	while(1) {
 		net_recv();
@@ -67,6 +68,7 @@ int main() {
 		memcpy(tmpmac, eth_get_src(), 6);
 		buffer_flush(&netwbuff1);
 		eth_write_header(&netwbuff1, &mac_addr[0], tmpmac, ETH_IPV4);
+		cputs("sending DHCP request\n");
 		dhcp_request(tmpsip, tmpyip);
 	}
 	while(1){
@@ -80,6 +82,9 @@ int main() {
 			}
 		}
 	}
+	snprintf(buff, 50, "ip: %d.%d.%d.%d\n", ip_addr[0], ip_addr[1], ip_addr[2], ip_addr[3]);
+	cputs(buff);
+
 	GPIO_WriteBit(GPIOB, GPIO_Pin_12, 1);
 	msleep(1);
 
