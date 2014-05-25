@@ -25,8 +25,9 @@ void net_send() {
 	enc28j60PacketSend(buffer_len(&netwbuff1), netwbuff1.start);
 }
 
-void net_recv() {
+uint32_t net_recv() {
 	net_nrecv = enc28j60PacketReceive(1500, &net_buffer);
+	return net_nrecv;
 }
 
 void net_set_ip(uint32_t ip) {

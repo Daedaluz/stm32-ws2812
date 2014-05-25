@@ -49,14 +49,17 @@ int main() {
 	
 	write_ws2812(0,3, "\x00\x0f\x00");
 
-	msleep(50);
+	sleep(1);
 
 	buffer_flush(&netwbuff1);
 	eth_write_header(&netwbuff1, mac_addr, mac_bcast, ETH_IPV4);
 	cputs("sending DHCP discover\n");
 	dhcp_discover();
 	while(1) {
-		net_recv();
+		if(net_recv() == 0) {
+			sleep(1);
+			dhcp_discover();
+		}
 		if(eth_get_type() == ETH_IPV4 && ip_get_protocol() == IP_UDP && ip_udp_get_dst() == 68 && dhcp_is_magic())
 			break;
 	}

@@ -14,7 +14,7 @@ extern uint32_t net_nrecv;
 
 void net_init(const char* mac);
 void net_send();
-void net_recv();
+uint32_t net_recv();
 void net_set_ip(uint32_t ip);
 
 

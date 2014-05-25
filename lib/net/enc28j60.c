@@ -256,14 +256,25 @@ uint16_t enc28j60PacketReceive(uint16_t maxlen, uint8_t* packet)
 {
 	uint16_t rxstat;
 	uint16_t len; 
-//	uint16_t retries;
+	uint16_t retries;
 	// check if a packet has been received and buffered
 //	if( !(enc28j60Read(EIR) & EIR_PKTIF) ){
 	// The above does not work. See Rev. B4 Silicon Errata point 6.
 //	for(retries = 0; retries < 1000 && enc28j60Read(EPKTCNT) == 0;){
 //		retries++;
 //	}
-	while( enc28j60Read(EPKTCNT) == 0 );
+
+//	while( enc28j60Read(EPKTCNT) == 0 );
+	int cont = 0;
+	for(retries = 0; retries > 5000; retries++){
+		if (enc28j60Read(EPKTCNT) != 0){
+			cont = 1;
+			break;
+		}
+	}
+	if(cont == 0)
+		return 0;
+
 ///	{
 //		return(0);
 //	}
