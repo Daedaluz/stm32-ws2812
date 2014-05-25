@@ -15,27 +15,11 @@
 #include "dhcp.h"
 #include "net.h"
 #include "arp.h"
+#include "sleep.h"
 
 #include "uart.h"
 #include "ws2812.h"
 
-uint32_t Del_1us(){
-	int l;
-	for(l=0; l < 8000; l++);
-	return l;
-}
-
-uint32_t Del_10us(){
-	int l;
-	for(l = 0; l < 10; l++)Del_1us();
-	return l;
-}
-
-uint32_t Del_1ms(){
-	int l;
-	for(l = 0; l < 100; l++)Del_10us();
-	return l;
-}
 
 static GPIO_InitTypeDef gpiocfg = {
 	.GPIO_Pin = GPIO_Pin_12,
@@ -62,12 +46,12 @@ int main() {
 	enc28j60PhyWrite(PHLCON, 0x7a4);
 	enc28j60clkout(2);
 	net_init(mac);
-	Del_1ms(20);
+	msleep(20);
 	
 	write_ws2812(0,3, "\x00\x0f\x00");
 
 
-	Del_1ms(50);
+	msleep(50);
 	buffer_flush(&netwbuff1);
 	eth_write_header(&netwbuff1, mac_addr, mac_bcast, ETH_IPV4);
 	dhcp_discover();
@@ -99,7 +83,7 @@ int main() {
 		}
 	}
 	GPIO_WriteBit(GPIOB, GPIO_Pin_12, 1);
-	Del_1ms(1);
+	msleep(1);
 
 	arp_gratuitous(&netwbuff1);
 	net_send();

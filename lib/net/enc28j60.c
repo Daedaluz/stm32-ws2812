@@ -1,6 +1,8 @@
 #include <SPI.h>
 #include <stdint.h>
 #include <enc28j60.h>
+#include <stm32f10x_gpio.h>
+#include "sleep.h"
 
 static uint8_t Enc28j60Bank;
 static uint16_t NextPacketPtr; 
@@ -113,7 +115,7 @@ void enc28j60PhyWrite(uint8_t address, uint16_t data)
 	// wait until the PHY write completes
 	while(enc28j60Read(MISTAT) & MISTAT_BUSY) 
 	{
-		Del_10us(1);
+		usleep(10);
 	}
 }
 
@@ -133,7 +135,7 @@ void enc28j60Init(uint8_t* macaddr)
 	//enc28j60HWreset();
 	// perform system reset
 	enc28j60WriteOp(ENC28J60_SOFT_RESET, 0, ENC28J60_SOFT_RESET);
-	Del_1ms(250);
+	msleep(250);
 	// check CLKRDY bit to see if reset is complete
 	// The CLKRDY does not work. See Rev. B4 Silicon Errata point. Just wait.
 	//while(!(enc28j60Read(ESTAT) & ESTAT_CLKRDY));

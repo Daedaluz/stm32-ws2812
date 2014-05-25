@@ -1,3 +1,5 @@
+#include <stdint.h>
+
 void usleep(uint32_t us) {
 	uint32_t l;
 	uint32_t x;

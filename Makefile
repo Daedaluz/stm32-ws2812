@@ -2,18 +2,18 @@ STDLIB=lib/src/core_cm3.o lib/src/misc.o lib/src/stm32f10x_adc.o lib/src/stm32f1
 
 #ENC28J60=lib/enc28j60/enc28j60_driver.c
 
-ENC28J60=lib/tcpip/enc28j60.o lib/tcpip/ip_arp_udp_tcp.o lib/tcpip/SPI.o #lib/tcpip/simple_server.o
+#ENC28J60=lib/tcpip/enc28j60.o lib/tcpip/ip_arp_udp_tcp.o lib/tcpip/SPI.o #lib/tcpip/simple_server.o
 BUFFER=lib/buffer/buffer.o
 NET=lib/net/enc28j60.o lib/net/SPI.o lib/net/ip.o lib/net/eth.o lib/net/net.o lib/net/dhcp.o lib/net/arp.o
 
-SRC=src/main.o src/uart.o src/ws2812.o src/write.o
+SRC=src/main.o src/uart.o src/ws2812.o src/write.o src/sleep.o
 
 CC=arm-none-eabi-gcc
 CXX=arm-none-eabi-gcc
 AS=arm-none-eabi-as #-mbig-endian
 LD=arm-none-eabu-ld
 
-INCLUDES=-I lib/inc -I lib/buffer -I lib/net
+INCLUDES=-I lib/inc -I lib/buffer -I lib/net -I src
 
 SYS=MD
 HSE=8000000
