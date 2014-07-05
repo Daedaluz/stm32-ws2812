@@ -95,6 +95,8 @@ int main() {
 	arp_gratuitous(&netwbuff1);
 	net_send();
 	buffer_flush(&netwbuff1);
+	uint32_t offset = 0;
+	uint32_t last_fragment = 0;
 	while(1){
 		if(net_recv() == 0)
 			continue;
@@ -102,7 +104,25 @@ int main() {
 			case ETH_IPV4:
 				// suck all the led-data!!!
 				if(ip_get_dst_addr() == htonl(*(uint32_t*)ip_addr) && ip_udp_get_dst() == 1200){
-					write_ws2812(0, (uint32_t)ip_udp_get_len(), ip_udp_get_datap());
+					int nfragment = ip_get_fragment();
+					int is_fragmented = ip_has_more_fragments();
+					uint32_t len = ip_udp_get_len();
+					int reset = 0;
+					if(!is_fragmented && nfragment != 0){
+						reset = 1;
+					}
+					if ((last_fragment + 1 == nfragment) || nfragment == 0) {
+						write_ws2812(offset, len, ip_udp_get_datap());
+					}
+					if(is_fragmented) {
+						offset += len;
+						last_fragment = nfragment;
+
+					}
+					if(reset){
+						offset = 0;
+						reset = 0;
+					}
 				}
 			break;
 			case ETH_ARP:{

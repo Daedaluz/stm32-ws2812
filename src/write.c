@@ -32,6 +32,6 @@ void write_ws2812(uint32_t offset, uint32_t size, char* data) {
 void write_dmx(uint32_t offset, uint32_t size, char* data) {
 }
 
-void request_write_ws2801(uint32_t offset, uint32_t size, char* data) {
+void write_ws2801(uint32_t offset, uint32_t size, char* data) {
 }
 

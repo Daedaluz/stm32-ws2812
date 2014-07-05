@@ -65,6 +65,15 @@ void ip_write_udp_message(struct buffer* b, uint32_t src, uint32_t dst, uint16_t
 	buffer_write(b, length, data);
 }
 
+uint32_t ip_get_fragment() {
+		return *(uint16_t*)(&net_buffer[0x2A]) & 0x1fff;
+}
+
+uint32_t ip_has_more_fragments() {
+	uint16_t* data = (uint16_t*)&net_buffer[0x2A];
+	return (*data & 0x8000);
+}
+
 uint8_t ip_get_protocol() {
 	return (uint8_t)net_buffer[0x17];
 }

@@ -23,6 +23,9 @@ uint16_t htons(uint16_t c);
 void ip_write_udp_message(struct buffer* b, uint32_t src, uint32_t dst, uint16_t srcp, 
 							uint16_t dstp, uint16_t length, char* data);
 
+uint32_t ip_get_fragment();
+uint32_t ip_has_more_fragments();
+
 
 uint32_t ip_is_protocol(uint8_t proto);
 
