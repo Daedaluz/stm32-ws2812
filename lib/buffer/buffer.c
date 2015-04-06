@@ -8,12 +8,22 @@ void buffer_init(struct buffer* b, uint32_t size, char* p) {
 	b->size = size;
 }
 
+void buffer_reset(struct buffer* b) {
+	b->cursor = b->start;
+	memset(b->start, 0, b->size);
+}
+
 uint32_t buffer_write(struct buffer* b, uint32_t size, const char* p) {
 	uint32_t c;
 	for(c = 0;b->size > buffer_len(b) && c < size; c++, b->cursor++) {
 		b->cursor[0] = p[c];
 	}
 	return c;
+}
+
+uint32_t buffer_remains(struct buffer* b) {
+	uint32_t tmp = buffer_len(b);
+	return b->size - tmp;
 }
 
 void buffer_flush(struct buffer* b) {

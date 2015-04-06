@@ -9,9 +9,11 @@ struct buffer {
 };
 
 void buffer_init(struct buffer* b, uint32_t size, char* p);
+void buffer_reset(struct buffer* b);
 uint32_t buffer_write(struct buffer* b, uint32_t size, const char* p);
 void buffer_flush(struct buffer* b);
 uint32_t buffer_len(struct buffer* b);
+uint32_t buffer_remains(struct buffer* b);
 
 int buffer_skip(struct buffer* b, uint32_t size);
 int buffer_zero(struct buffer* b, uint32_t size);
